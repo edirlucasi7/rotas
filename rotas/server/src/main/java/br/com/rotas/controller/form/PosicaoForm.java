@@ -1,7 +1,6 @@
 package br.com.rotas.controller.form;
 
 import br.com.rotas.modelo.Posicao;
-import org.springframework.security.core.parameters.P;
 
 import javax.validation.constraints.NotNull;
 

@@ -4,7 +4,7 @@ import br.com.rotas.controller.dto.RotaDto;
 import br.com.rotas.controller.form.RotaForm;
 import br.com.rotas.modelo.Rota;
 import br.com.rotas.repository.RotaRepository;
-import br.com.rotas.service.TrajetoOtimizado;
+import br.com.rotas.service.OtimizaRota;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +28,14 @@ public class RotasController {
     @Autowired
     private RotaRepository repository;
     @Autowired
-    private TrajetoOtimizado trajetoOtimizado;
+    private OtimizaRota otimizacaoRota;
 
     @PostMapping
     @Transactional
     public ResponseEntity<RotaDto> cadastra(@RequestBody @Valid RotaForm form,
                                             UriComponentsBuilder uriComponentsBuilder) throws IOException {
 
-        String caminhoEncodado = trajetoOtimizado.encodeCaminho(form.getParadas());
+        String caminhoEncodado = otimizacaoRota.encodaCaminho(form.getParadas(), form.getOrigem(), form.getDestino());
 
         Rota rota = form.toModel(manager, caminhoEncodado);
         manager.persist(rota);

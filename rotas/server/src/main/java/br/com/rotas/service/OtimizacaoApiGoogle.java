@@ -16,36 +16,10 @@ import java.util.List;
 
 @Service
 @Primary
-public class ApiGoogle implements TrajetoOtimizado{
-
-    public static void main(String[] args) {
-        RestTemplate client = new RestTemplate();
-        String origem = "Fortaleza,CE";
-        String destino = "Quixada,CE";
-        System.out.println(origem);
-        ResponseEntity<String> exchange = client.exchange("https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyAPjgxN7NiJzQFZtg8vLJSVTeUR-HHV1tw&language=pt_BR&" +
-                        "waypoints=optimize:true|Pacajus,CE|Horizonte,CE&origin="+origem+"&destination="+destino+"",
-                HttpMethod.GET, null, String.class);
-
-        String jsonString = exchange.getBody();
-        JSONObject obj = new JSONObject(jsonString);
-        JSONArray arr = obj.getJSONArray("routes");
-
-        List<Integer> listdata = new ArrayList<Integer>();
-
-        for (int i = 0; i < arr.length(); i++) {
-            {
-                JSONArray waypoint_order = arr.getJSONObject(i).getJSONArray("waypoint_order");
-                for (int y = 0; y < waypoint_order.length(); y++) {
-                    listdata.add(Integer.valueOf(waypoint_order.getInt(y)));
-                }
-            }
-        }
-
-    }
+public class OtimizacaoApiGoogle implements OtimizaRota{
 
     @Override
-    public List<Integer> organiza(List<Parada> paradas, String origem, String destino) throws IOException {
+    public List<Integer> organizaCaminho(List<Parada> paradas, String origem, String destino) throws IOException {
 
         String param = "";
         for (Parada parada : paradas) {
@@ -77,9 +51,17 @@ public class ApiGoogle implements TrajetoOtimizado{
     }
 
     @Override
-    public String encodeCaminho(List<ParadaForm> paradas) {
+    public String encodaCaminho(List<ParadaForm> paradas, String origem, String destino) {
+
+        String param = "";
+        for (ParadaForm parada : paradas) {
+            param += "|";
+            param += parada.getPosicaoForm().getLatitude()+","+parada.getPosicaoForm().getLongitude();
+        }
+
         RestTemplate client = new RestTemplate();
-        ResponseEntity<String> exchange = client.exchange("https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyAPjgxN7NiJzQFZtg8vLJSVTeUR-HHV1tw&language=pt_BR&waypoints=optimize:true|Pacajus,CE|Horizonte,CE&origin=Forteleza,CE&destination=Quixada,CE",
+        ResponseEntity<String> exchange = client.exchange("https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyAPjgxN7NiJzQFZtg8vLJSVTeUR-HHV1tw&language=pt_BR&" +
+                        "waypoints=optimize:true"+param+"&origin="+origem+"&destination="+destino+"",
                 HttpMethod.GET, null, String.class);
 
         String jsonString = exchange.getBody();

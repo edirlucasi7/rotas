@@ -24,7 +24,7 @@ public class RotaDto {
         this.destino = rota.getDestino();
         this.paradas = rota.getParadas();
         this.dataRota = rota.getDataRota();
-        this.veiculo = rota.getIdVeiculo();
+        this.veiculo = rota.getVeiculo();
         this.caminhoEncodado = rota.getCaminhoEncodado();
     }
 

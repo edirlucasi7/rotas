@@ -1,6 +1,7 @@
 package br.com.rotas.modelo;
 
 import br.com.rotas.controller.form.ParadaForm;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -45,6 +46,7 @@ public class Rota {
         return nome;
     }
 
+    @JsonManagedReference
     public List<Parada> getParadas() {
         return paradas;
     }
@@ -55,10 +57,6 @@ public class Rota {
 
     public Long getId() {
         return id;
-    }
-
-    public Veiculo getIdVeiculo() {
-        return veiculo;
     }
 
     public void setCaminhoEncodado(String caminhoEncodado) {

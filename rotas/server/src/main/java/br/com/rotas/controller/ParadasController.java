@@ -3,7 +3,7 @@ package br.com.rotas.controller;
 import br.com.rotas.controller.dto.ParadaDto;
 import br.com.rotas.modelo.Parada;
 import br.com.rotas.modelo.Rota;
-import br.com.rotas.service.TrajetoOtimizado;
+import br.com.rotas.service.OtimizaRota;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +25,13 @@ public class ParadasController {
     @PersistenceContext
     private EntityManager manager;
     @Autowired
-    private TrajetoOtimizado trajetoOtimizado;
+    private OtimizaRota otimizacaoRota;
 
     @GetMapping("/{id}")
     public ResponseEntity<List<ParadaDto>> retornaRotasOrdenadas(@PathVariable("id") Long id) throws IOException {
         Rota rota = manager.find(Rota.class, id);
 
-        List<Integer> ordem = trajetoOtimizado.organiza(rota.getParadas(), rota.getOrigem(), rota.getDestino());
+        List<Integer> ordem = otimizacaoRota.organizaCaminho(rota.getParadas(), rota.getOrigem(), rota.getDestino());
         List<ParadaDto> paradasOrdenadas = new ArrayList<>();
 
         for (Integer index : ordem) {

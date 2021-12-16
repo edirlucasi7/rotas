@@ -1,6 +1,7 @@
 package br.com.rotas.modelo;
 
 import br.com.rotas.controller.form.PosicaoForm;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -34,14 +35,8 @@ public class Parada {
         return posicao;
     }
 
-    @Override
-    public String toString() {
-        return "Parada{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", posicao=" + posicao +
-                ", rota=" + rota +
-                '}';
+    @JsonBackReference
+    public Rota getRota() {
+        return rota;
     }
-
 }

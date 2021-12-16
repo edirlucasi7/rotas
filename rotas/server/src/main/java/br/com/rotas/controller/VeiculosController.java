@@ -1,9 +1,7 @@
 package br.com.rotas.controller;
 
-import br.com.rotas.controller.dto.RotaDto;
 import br.com.rotas.controller.dto.VeiculoDto;
 import br.com.rotas.controller.form.VeiculoForm;
-import br.com.rotas.modelo.Rota;
 import br.com.rotas.modelo.Veiculo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
