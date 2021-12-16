@@ -27,4 +27,12 @@ public class PosicaoForm {
         return longitude;
     }
 
+    @Override
+    public String toString() {
+        return "PosicaoForm{" +
+                "latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                '}';
+    }
+
 }

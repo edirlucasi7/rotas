@@ -15,22 +15,27 @@ import java.util.List;
 public class RotaForm {
 
     private @NotEmpty String nome;
+    private @NotEmpty String origem;
+    private @NotEmpty String destino;
     private List<ParadaForm> paradas = new ArrayList<>();
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private @NotNull LocalDate dataRota;
     private @NotNull Long idVeiculo;
-//    private @NotNull String caminhoEncodado;
 
-    public RotaForm(String nome, Long idVeiculo, List<ParadaForm> paradas) {
+    public RotaForm(String nome, String origem, String destino, Long idVeiculo, List<ParadaForm> paradas) {
         this.nome = nome;
+        this.origem = origem;
+        this.destino = destino;
         this.idVeiculo = idVeiculo;
         this.paradas.addAll(paradas);
     }
 
-    public Rota toModel(EntityManager manager) {
+    public Rota toModel(EntityManager manager, String caminhoEncodado) {
         Veiculo veiculo = manager.find(Veiculo.class, idVeiculo);
         Assert.state(veiculo!=null, "Uma rota precisa está associada com um veículo!");
-        return new Rota(nome, paradas, dataRota, veiculo);
+        Rota rota = new Rota(nome, origem, destino, paradas, dataRota, veiculo);
+        rota.setCaminhoEncodado(caminhoEncodado);
+        return rota;
     }
 
     public List<ParadaForm> getParadas() {
@@ -48,4 +53,13 @@ public class RotaForm {
     public Long getIdVeiculo() {
         return idVeiculo;
     }
+
+    public String getOrigem() {
+        return origem;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
 }

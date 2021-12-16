@@ -34,4 +34,14 @@ public class Parada {
         return posicao;
     }
 
+    @Override
+    public String toString() {
+        return "Parada{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", posicao=" + posicao +
+                ", rota=" + rota +
+                '}';
+    }
+
 }

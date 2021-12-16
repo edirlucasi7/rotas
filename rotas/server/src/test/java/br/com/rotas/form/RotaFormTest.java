@@ -20,7 +20,7 @@ public class RotaFormTest {
 
     private PosicaoForm requestPosicao = new PosicaoForm("-12313121", "21212121");
     private List<ParadaForm> requestParada = Arrays.asList(new ParadaForm("Joao Pessoa", requestPosicao));
-    private RotaForm requestForm = new RotaForm("Fortaleza/Maceio", 1l, requestParada);
+    private RotaForm requestForm = new RotaForm("Fortaleza/Maceio", "","", 1l, requestParada);
 
     private Veiculo veiculo = new Veiculo("Carreta");
 
@@ -31,8 +31,8 @@ public class RotaFormTest {
     @Test
     @DisplayName("cria uma rota com veiculo associado")
     void teste1() throws Exception {
-
-        Rota rota = requestForm.toModel(manager);
+        String fake = "sss";
+        Rota rota = requestForm.toModel(manager, fake);
         Assertions.assertNotNull(rota);
 
     }
@@ -40,11 +40,11 @@ public class RotaFormTest {
     @Test
     @DisplayName("nao cria uma rota sem um veiculo associado")
     void teste2() throws Exception {
-
+        String fake = "sss";
         Mockito.when(manager.find(Veiculo.class, 1l)).thenReturn(null);
 
         Assertions.assertThrows(IllegalStateException.class, () -> {
-            requestForm.toModel(manager);
+            requestForm.toModel(manager, fake);
         });
 
     }

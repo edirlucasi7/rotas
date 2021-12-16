@@ -6,6 +6,7 @@ import io.jsonwebtoken.lang.Assert;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class ParadaForm {
 
@@ -28,6 +29,14 @@ public class ParadaForm {
 
     public PosicaoForm getPosicaoForm() {
         return posicao;
+    }
+
+    @Override
+    public String toString() {
+        return "ParadaForm{" +
+                "nome='" + nome + '\'' +
+                ", posicao=" + posicao +
+                '}';
     }
 
 }

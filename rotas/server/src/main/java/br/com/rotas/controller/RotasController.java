@@ -3,8 +3,8 @@ package br.com.rotas.controller;
 import br.com.rotas.controller.dto.RotaDto;
 import br.com.rotas.controller.form.RotaForm;
 import br.com.rotas.modelo.Rota;
-//import br.com.rotas.service.Trajeto;
 import br.com.rotas.repository.RotaRepository;
+import br.com.rotas.service.TrajetoOtimizado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +14,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,15 +27,17 @@ public class RotasController {
     private EntityManager manager;
     @Autowired
     private RotaRepository repository;
-//    @Autowired
-//    private Trajeto trajeto;
+    @Autowired
+    private TrajetoOtimizado trajetoOtimizado;
 
     @PostMapping
     @Transactional
     public ResponseEntity<RotaDto> cadastra(@RequestBody @Valid RotaForm form,
-                                            UriComponentsBuilder uriComponentsBuilder) {
-        Rota rota = form.toModel(manager);
+                                            UriComponentsBuilder uriComponentsBuilder) throws IOException {
 
+        String caminhoEncodado = trajetoOtimizado.encodeCaminho(form.getParadas());
+
+        Rota rota = form.toModel(manager, caminhoEncodado);
         manager.persist(rota);
 
         URI uri = uriComponentsBuilder.path("/rotas/{id}").buildAndExpand(rota.getId()).toUri();

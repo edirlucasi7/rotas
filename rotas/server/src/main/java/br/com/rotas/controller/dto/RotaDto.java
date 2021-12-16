@@ -11,15 +11,21 @@ import java.util.List;
 public class RotaDto {
 
     private String nome;
+    private String origem;
+    private String destino;
     private List<Parada> paradas = new ArrayList<>();
     private LocalDate dataRota;
     private Veiculo veiculo;
+    private String caminhoEncodado;
 
     public RotaDto(Rota rota) {
         this.nome = rota.getNome();
+        this.origem = rota.getOrigem();
+        this.destino = rota.getDestino();
         this.paradas = rota.getParadas();
         this.dataRota = rota.getDataRota();
         this.veiculo = rota.getIdVeiculo();
+        this.caminhoEncodado = rota.getCaminhoEncodado();
     }
 
     public String getNome() {
@@ -36,6 +42,18 @@ public class RotaDto {
 
     public Veiculo getVeiculo() {
         return veiculo;
+    }
+
+    public String getCaminhoEncodado() {
+        return caminhoEncodado;
+    }
+
+    public String getOrigem() {
+        return origem;
+    }
+
+    public String getDestino() {
+        return destino;
     }
 
 }

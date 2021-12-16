@@ -14,21 +14,28 @@ import java.util.stream.Collectors;
 @Entity
 public class Rota {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private @NotEmpty String nome;
+    private @NotEmpty String origem;
+    private @NotEmpty String destino;
     @OneToMany(mappedBy = "rota", cascade = CascadeType.PERSIST)
     private @NotNull List<Parada> paradas = new ArrayList<>();
     private @NotNull LocalDate dataRota;
     @ManyToOne
     private @NotNull Veiculo veiculo;
-    //    private @NotNull String caminhoEncodado;
+    @Lob
+    private String caminhoEncodado;
 
     @Deprecated
-    public Rota() { }
+    public Rota() {
+    }
 
-    public Rota(String nome, List<ParadaForm> paradas, LocalDate dataRota, Veiculo veiculo) {
+    public Rota(String nome, String origem, String destino, List<ParadaForm> paradas, LocalDate dataRota, Veiculo veiculo) {
         this.nome = nome;
+        this.origem = origem;
+        this.destino = destino;
         this.dataRota = dataRota;
         this.veiculo = veiculo;
         this.paradas.addAll(paradas.stream().map(parada -> parada.toModel(this)).collect(Collectors.toSet()));
@@ -42,10 +49,6 @@ public class Rota {
         return paradas;
     }
 
-//    public String getCaminhoEncodado() {
-//        return caminhoEncodado;
-//    }
-
     public LocalDate getDataRota() {
         return dataRota;
     }
@@ -57,4 +60,25 @@ public class Rota {
     public Veiculo getIdVeiculo() {
         return veiculo;
     }
+
+    public void setCaminhoEncodado(String caminhoEncodado) {
+        this.caminhoEncodado = caminhoEncodado;
+    }
+
+    public String getCaminhoEncodado() {
+        return caminhoEncodado;
+    }
+
+    public String getOrigem() {
+        return origem;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
 }
