@@ -21,7 +21,7 @@ public class Rota {
     private @NotEmpty String nome;
     private @NotEmpty String origem;
     private @NotEmpty String destino;
-    @OneToMany(mappedBy = "rota", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "rota", cascade = CascadeType.ALL)
     private @NotNull List<Parada> paradas = new ArrayList<>();
     private @NotNull LocalDate dataRota;
     @ManyToOne
@@ -40,6 +40,11 @@ public class Rota {
         this.dataRota = dataRota;
         this.veiculo = veiculo;
         this.paradas.addAll(paradas.stream().map(parada -> parada.toModel(this)).collect(Collectors.toSet()));
+    }
+
+    public void adicionaParada(@NotNull ParadaForm novaParada) {
+        Parada parada = novaParada.toModel(this);
+        this.paradas.add(parada);
     }
 
     public String getNome() {

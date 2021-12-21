@@ -1,6 +1,5 @@
 package br.com.rotas.modelo;
 
-import br.com.rotas.controller.form.PosicaoForm;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -13,7 +12,7 @@ public class Parada {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private @NotEmpty String nome;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private @NotNull Posicao posicao;
     @ManyToOne
     private @NotNull Rota rota;
@@ -21,9 +20,9 @@ public class Parada {
     @Deprecated
     public Parada() { }
 
-    public Parada(String nome, PosicaoForm posicaoForm, Rota rota) {
+    public Parada(String nome, Posicao posicao, Rota rota) {
         this.nome = nome;
-        this.posicao = posicaoForm.toModel();
+        this.posicao = posicao;
         this.rota = rota;
     }
 
@@ -39,4 +38,5 @@ public class Parada {
     public Rota getRota() {
         return rota;
     }
+
 }

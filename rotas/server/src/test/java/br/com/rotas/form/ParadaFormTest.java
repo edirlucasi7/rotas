@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.List;
 
-public class RotaFormTest {
+public class ParadaFormTest {
 
     EntityManager manager = Mockito.mock(EntityManager.class);
 
@@ -22,30 +22,20 @@ public class RotaFormTest {
     private List<ParadaForm> requestParada = Arrays.asList(new ParadaForm("Joao Pessoa", requestPosicao));
     private RotaForm requestForm = new RotaForm("Fortaleza/Maceio", "","", 1l, requestParada);
 
-    private Veiculo veiculo = new Veiculo("Carreta");
-
-    {
-        Mockito.when(manager.find(Veiculo.class, 1l)).thenReturn(veiculo);
-    }
+    private ParadaForm paradaForm = new ParadaForm("teste", requestPosicao);
 
     @Test
-    @DisplayName("cria uma rota com veiculo associado")
+    @DisplayName("cria uma parada que esta associada com uma rota")
     void teste1() throws Exception {
-        String fake = "sss";
-        Rota rota = requestForm.toModel(manager, fake);
-        Assertions.assertNotNull(rota);
 
-    }
+        EntityManager manager = Mockito.mock(EntityManager.class);
 
-    @Test
-    @DisplayName("nao cria uma rota sem um veiculo associado")
-    void teste2() throws Exception {
-        String fake = "sss";
-        Mockito.when(manager.find(Veiculo.class, 1l)).thenReturn(null);
+        Mockito.when(manager.find(Veiculo.class, 1l))
+                .thenReturn(new Veiculo(""));
 
-        Assertions.assertThrows(IllegalStateException.class, () -> {
-            requestForm.toModel(manager, fake);
-        });
+        Rota rota = requestForm.toModel(manager, "akfnwnfjiandj");
+
+        Assertions.assertNotNull(paradaForm.toModel(rota));
     }
 
 }

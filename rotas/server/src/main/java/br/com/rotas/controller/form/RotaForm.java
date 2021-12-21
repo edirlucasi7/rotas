@@ -1,5 +1,7 @@
 package br.com.rotas.controller.form;
 
+import br.com.rotas.compartilhado.ExistsId;
+import br.com.rotas.compartilhado.UniqueValue;
 import br.com.rotas.modelo.Rota;
 import br.com.rotas.modelo.Veiculo;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,12 +16,14 @@ import java.util.List;
 
 public class RotaForm {
 
+    @UniqueValue(domainClass = Rota.class, fieldName = "nome")
     private @NotEmpty String nome;
     private @NotEmpty String origem;
     private @NotEmpty String destino;
     private List<ParadaForm> paradas = new ArrayList<>();
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private @NotNull LocalDate dataRota;
+    @ExistsId(domainClass = Veiculo.class, fieldName = "id")
     private @NotNull Long idVeiculo;
 
     public RotaForm(String nome, String origem, String destino, Long idVeiculo, List<ParadaForm> paradas) {

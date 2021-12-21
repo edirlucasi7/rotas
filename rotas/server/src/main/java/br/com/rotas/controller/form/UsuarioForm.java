@@ -17,9 +17,7 @@ public class UsuarioForm {
         this.senha = senha;
     }
 
-    public Usuario toModel() {
-        return new Usuario(email, new SenhaLimpa(senha));
-    }
+    public Usuario toModel() { return new Usuario(email, new SenhaLimpa(senha)); }
 
     public String getSenha() {
         return this.senha;
@@ -28,4 +26,5 @@ public class UsuarioForm {
     public String getEmail() {
         return this.email;
     }
+
 }
