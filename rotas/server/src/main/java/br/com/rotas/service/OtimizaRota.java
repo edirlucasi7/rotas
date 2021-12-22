@@ -9,6 +9,7 @@ import java.util.List;
 public interface OtimizaRota {
 
     List<Integer> organizaCaminho(List<Parada> paradas, String origem, String destino) throws IOException;
-    String encodaCaminho(List<ParadaForm> paradas, String origem, String destino);
+    String cadastraEncodaCaminho(List<ParadaForm> paradas, String origem, String destino);
+    String atualizaEncodaCaminho(List<Parada> paradas, String origem, String destino);
 
 }

@@ -39,7 +39,7 @@ public class RotasController {
     public ResponseEntity<RotaDto> cadastra(@RequestBody @Valid RotaForm form,
                                             UriComponentsBuilder uriComponentsBuilder) throws IOException {
 
-        String caminhoEncodado = otimizacaoRota.encodaCaminho(form.getParadas(), form.getOrigem(), form.getDestino());
+        String caminhoEncodado = otimizacaoRota.cadastraEncodaCaminho(form.getParadas(), form.getOrigem(), form.getDestino());
 
         Rota rota = form.toModel(manager, caminhoEncodado);
         manager.persist(rota);
@@ -78,7 +78,9 @@ public class RotasController {
         Rota rota = manager.find(Rota.class, id);
         if(rota!=null) {
             rota.adicionaParada(paradaForm);
+            String caminhoEncodado = otimizacaoRota.atualizaEncodaCaminho(rota.getParadas(), rota.getOrigem(), rota.getDestino());
             manager.merge(rota);
+            rota.setCaminhoEncodado(caminhoEncodado);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

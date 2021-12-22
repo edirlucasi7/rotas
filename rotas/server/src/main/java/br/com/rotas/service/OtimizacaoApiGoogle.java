@@ -27,10 +27,7 @@ public class OtimizacaoApiGoogle implements OtimizaRota{
             param += parada.getPosicao().getLatitude()+","+parada.getPosicao().getLongitude();
         }
 
-        RestTemplate client = new RestTemplate();
-        ResponseEntity<String> exchange = client.exchange("https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyAPjgxN7NiJzQFZtg8vLJSVTeUR-HHV1tw&language=pt_BR&" +
-                        "waypoints=optimize:true"+param+"&origin="+origem+"&destination="+destino+"",
-                HttpMethod.GET, null, String.class);
+        ResponseEntity<String> exchange = getApiGoolge(origem, destino, param);
 
         String jsonString = exchange.getBody();
         JSONObject obj = new JSONObject(jsonString);
@@ -51,7 +48,7 @@ public class OtimizacaoApiGoogle implements OtimizaRota{
     }
 
     @Override
-    public String encodaCaminho(List<ParadaForm> paradas, String origem, String destino) {
+    public String cadastraEncodaCaminho(List<ParadaForm> paradas, String origem, String destino) {
 
         String param = "";
         for (ParadaForm parada : paradas) {
@@ -59,10 +56,7 @@ public class OtimizacaoApiGoogle implements OtimizaRota{
             param += parada.getPosicaoForm().getLatitude()+","+parada.getPosicaoForm().getLongitude();
         }
 
-        RestTemplate client = new RestTemplate();
-        ResponseEntity<String> exchange = client.exchange("https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyAPjgxN7NiJzQFZtg8vLJSVTeUR-HHV1tw&language=pt_BR&" +
-                        "waypoints=optimize:true"+param+"&origin="+origem+"&destination="+destino+"",
-                HttpMethod.GET, null, String.class);
+        ResponseEntity<String> exchange = getApiGoolge(origem, destino, param);
 
         String jsonString = exchange.getBody();
         JSONObject obj = new JSONObject(jsonString);
@@ -73,6 +67,36 @@ public class OtimizacaoApiGoogle implements OtimizaRota{
             return path;
         }
         return "";
+    }
+
+    @Override
+    public String atualizaEncodaCaminho(List<Parada> paradas, String origem, String destino) {
+
+        String param = "";
+        for (Parada parada : paradas) {
+            param += "|";
+            param += parada.getPosicao().getLatitude()+","+parada.getPosicao().getLongitude();
+        }
+
+        ResponseEntity<String> exchange = getApiGoolge(origem, destino, param);
+
+        String jsonString = exchange.getBody();
+        JSONObject obj = new JSONObject(jsonString);
+        JSONArray arr = obj.getJSONArray("routes");
+        for (int i = 0; i < arr.length(); i++)
+        {
+            String path = arr.getJSONObject(i).getJSONObject("overview_polyline").getString("points");
+            return path;
+        }
+        return "";
+    }
+
+    private ResponseEntity<String> getApiGoolge(String origem, String destino, String param) {
+        RestTemplate client = new RestTemplate();
+        ResponseEntity<String> exchange = client.exchange("https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyAPjgxN7NiJzQFZtg8vLJSVTeUR-HHV1tw&language=pt_BR&" +
+                        "waypoints=optimize:true"+ param +"&origin="+ origem +"&destination="+ destino +"",
+                HttpMethod.GET, null, String.class);
+        return exchange;
     }
 
 }
